@@ -12,13 +12,6 @@ class Play extends Phaser.Scene {
         this.load.image('Background3', './assets/starfield2.png');
         this.load.image('borderOverlay', './assets/borderOverlay.png');
         this.load.image('particle', './assets/particle.png');
-
-        this.load.spritesheet('explosion', './assets/explosion.png', {
-            frameWidth: 64,
-            frameHeight: 32,
-            startFrame: 0,
-            endFrame: 9
-        });
     }
 
     create() {
@@ -26,7 +19,7 @@ class Play extends Phaser.Scene {
 
         //define keys
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -69,27 +62,27 @@ class Play extends Phaser.Scene {
 
         this.p1Rocket = new Rocket(
             this,
-            game.config.width / 2,
+            game.config.width / 3,
             game.config.height - borderUISize - borderPadding,
             'rocket1',
             0,
             {
-                left: keyLeft,
-                right: keyRight,
-                fire: keyUp
+                left: keyA,
+                right: keyD,
+                fire: keyW
             }
         ).setOrigin(0.5, 0);
 
         this.p2Rocket = new Rocket(
             this,
-            game.config.width / 2,
+            game.config.width * 2 / 3,
             game.config.height - borderUISize - borderPadding,
             'rocket2',
             0,
             {
-                left: keyA,
-                right: keyD,
-                fire: keyF
+                left: keyLeft,
+                right: keyRight,
+                fire: keyUp
             }
         ).setOrigin(0.5, 0);
 
@@ -115,16 +108,6 @@ class Play extends Phaser.Scene {
         ).setOrigin(0, 0);
 
         this.add.image(game.config.width / 2, game.config.height / 2, 'borderOverlay');
-
-        this.anims.create({
-            key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', {
-                start: 0,
-                end: 9,
-                first: 0
-            }),
-            framerate: 30
-        });
 
         this.p1score = 0;
         this.p2score = 0;
@@ -165,7 +148,7 @@ class Play extends Phaser.Scene {
         this.timer = this.add.text(
             game.config.width / 2,
             borderUISize + borderPadding * 2,
-            game.settings.gameTimer / 1000,
+            'Time Remaining: ' + (game.settings.gameTimer / 1000),
             scoreConfig
         ).setOrigin(0.5, 0);
 
@@ -213,7 +196,7 @@ class Play extends Phaser.Scene {
             this.starfield1.tilePositionX -= starSpeed;
             this.starfield2.tilePositionX -= starSpeed / 2;
             this.starfield3.tilePositionX -= starSpeed / 3;
-            this.timer.text = (game.settings.gameTimer / 1000) - Math.floor(this.clock.getElapsedSeconds());
+            this.timer.text = 'Time remaining: ' + ((game.settings.gameTimer / 1000) - Math.floor(this.clock.getElapsedSeconds()));
             
             this.p1Rocket.update();
             this.p2Rocket.update();

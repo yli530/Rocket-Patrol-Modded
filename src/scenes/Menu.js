@@ -17,7 +17,7 @@ class Menu extends Phaser.Scene {
     create() {
         let menuConfig = {
             fontFamily: 'Courier',
-            fontSize: '28px',
+            fontSize: '24px',
             backgroundColor: '#f3b141',
             color: '#843685',
             align: 'right',
@@ -30,7 +30,7 @@ class Menu extends Phaser.Scene {
 
         this.add.text(
             game.config.width/2,
-            game.config.height/2 - borderUISize -borderPadding,
+            game.config.height/2 - borderUISize*2 - borderPadding,
             'ROCKET PATROL',
             menuConfig
         ).setOrigin(0.5);
@@ -38,7 +38,7 @@ class Menu extends Phaser.Scene {
         this.add.text(
             game.config.width/2,
             game.config.height/2,
-            'User ←→ arrows to move & (F) to fire',
+            'Player 1 (A, D) arrows to move & (W) to fire\nPlayer 2 (←, →) arrows to move & (↑) to fire',
             menuConfig
         ).setOrigin(0.5);
 
@@ -46,13 +46,13 @@ class Menu extends Phaser.Scene {
         menuConfig.color = '#000';
         this.add.text(
             game.config.width/2,
-            game.config.height/2 + borderUISize + borderPadding,
-            'Press ← for Novice or → for Expert',
+            game.config.height/2 + borderUISize*2 + borderPadding,
+            'Press N for Novice or M for Expert',
             menuConfig
         ).setOrigin(0.5);
 
-        keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+        keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
 
         game.settings = {
             spaceshipSpeed: 3,
@@ -62,14 +62,14 @@ class Menu extends Phaser.Scene {
     }
 
     update() {
-        if(Phaser.Input.Keyboard.JustDown(keyLeft)) {
+        if(Phaser.Input.Keyboard.JustDown(keyN)) {
             game.settings.spaceshipSpeed = 3;
             game.settings.gameTimer = 60000;
             this.sound.play('sfx_select');
             this.scene.start('playScene');
         }
 
-        if(Phaser.Input.Keyboard.JustDown(keyRight)) {
+        if(Phaser.Input.Keyboard.JustDown(keyM)) {
             game.settings.spaceshipSpeed = 4;
             game.settings.gameTimer = 45000;
             this.sound.play('sfx_select');
