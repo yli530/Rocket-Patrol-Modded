@@ -7,10 +7,13 @@ class Spaceship extends Phaser.GameObjects.Sprite {
         scene.time.delayedCall(game.settings.gameTimer / 2, () => {
             this.movementSpeed = this.movementSpeed * 2;
         }, null, this);
+        this.destroyed = false;
     }
 
     update() {
-        this.x -= this.movementSpeed;
+        if(!this.destroyed) {
+            this.x -= this.movementSpeed;
+        }
         if(this.x <= 0 - this.width) {
             this.reset();
         }

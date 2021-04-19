@@ -9,8 +9,6 @@ class Play extends Phaser.Scene {
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
 
-        this.load.audio('sfx_explosion', './assets/explosion38.wav');
-
         this.load.spritesheet('explosion', './assets/explosion.png', {
             frameWidth: 64,
             frameHeight: 32,
@@ -20,6 +18,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.explodeAudio = ['sfx_explode1', 'sfx_explode2', 'sfx_explode3', 'sfx_explode4', 'sfx_explode5', 'sfx_explode6'];
 
         //define keys
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -257,17 +256,19 @@ class Play extends Phaser.Scene {
     }
 
     shipExplode(ship) {
-        ship.alpha = 0;
-
         let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+        ship.alpha = 0;
+        ship.reset();
+        ship.destroyed = true;
+
         boom.anims.play('explode');
         boom.on('animationcomplete', () => {
-            ship.reset();
             ship.alpha = 1;
+            ship.destroyed = false;
             boom.destroy();
         });
 
-        this.sound.play('sfx_explosion');
+        this.sound.play(this.explodeAudio[Math.floor(Math.random() * 6)]);
 
         return ship.points;
     }
